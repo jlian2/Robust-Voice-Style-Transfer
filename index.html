@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)https://syang1993.github.io/glow_wavegan/ -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Glow-WaveGAN: Learning Speech Representations from GAN-based Auto-encoder For High Fidelity Flow-based Speech Synthesis</title>
+<meta name="generator" content="Jekyll v3.9.0">
+<meta property="og:title" content="Learning Speech Representations from GAN-based Auto-encoder For High Fidelity Flow-based Speech Synthesis">
+<meta property="og:locale" content="en_US">
+<link rel="canonical" href="https://syang1993.github.io/glow_wavegan/">
+<meta property="og:url" content="https://syang1993.github.io/glow_wavegan/">
+<meta name="twitter:card" content="summary">
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body data-new-gr-c-s-check-loaded="14.1001.0" data-gr-ext-installed="">
+    <section class="page-header">
+    <!-- <h1 class="project-name">Demo PAGE</h1> -->
+    <!-- <h2 class="project-tagline"></h2> -->
+      
+      
+    </section>
+
+    <section class="main-content">
+      <h1 id=""><center> Glow-WaveGAN: Learning Speech Representations from GAN-based Auto-encoder For High Fidelity Flow-based Speech Synthesis </center></h1>
+
+<center> Jian Cong<sup>1</sup>, Shan Yang<sup>2</sup>, Lei Xie<sup>1</sup>, Dan Su<sup>2</sup> </center>
+<center> <sup>1</sup> Audio, Speech and Language Processing Group (ASLP@NPU), School of Computer Science, Northwestern Polytechnical University, Xi'an, China</center>
+<center> <sup>2</sup> Tencent AI Lab, China</center>
+
+
+<h2 id="abstract">Abstract</h2>
+<p>Current two-stage TTS framework typically integrates an acoustic model with a vocoder -- the acoustic model predicts a low resolution intermediate representation such as Mel-spectrum while the vocoder generates waveform from the intermediate representation. Although using the intermediate representation as a bridge, there still exists critical mismatch between the acoustic model and the vocoder as they are commonly separately learned and work on different distributions of representation, leading to artifacts in the synthesized speech. In this work, different from using predesigned intermediate representation in most previous works, we propose to use VAE combining with GAN to learn a latent representation directly from speech and then utilize a flow-based acoustic model to model the distribution of the latent representation from text. In this way, the mismatch problem is migrated as the two stages work on the same distribution. Results demonstrate that the flow-based acoustic model can exactly model the distribution of our learned speech representation and the proposed TTS framework, namely Glow-WaveGAN, can produce high fidelity speech outperforming the state-of-the-art GAN-based model.</p>
+
+<h2><p class="toc_title">Contents</p></h2>
+<div id="toc_container">
+<ul>
+  <li><a href="#1">Single speaker (LJSpeech)</a></li>
+  <ul>
+    <li><a href="#1.1">Waveform reconstruction</a></li>
+    <li><a href="#1.2">End-to-end Speech Synthesis</a></li>
+  </ul>
+  <li><a href="#2">Multi speaker (VCTK)</a></li>
+  <ul>
+    <li><a href="#2.1">Reconstruction to waveform</a></li>
+    <li><a href="#2.2">End-to-end Speech Synthesis</a></li>
+    <li><a href="#2.3">Synthesis for unseen speaekrs</a></li>
+  </ul>
+  <li><a href="#3">Additional comparison</a></li>
+  <ul>
+    <li><a href="#3.1">Compare with the hifigan demos</a></li>
+    <li><a href="#3.2">Compare with the glow-tts demos</a></li>
+  </ul>
+</ul>
+Annotation: The <b>inner-GAN</b> indicates that the decoder in our VAE and the discriminators are used as a GAN-based vocoder, which receives Mel-spectrum as input. <b>WaveGAN</b> means the VAE + GAN model, which can be used to reconstruct input speech.
+</div>
+<br>
+<br>
+
+<a name="1"><h2>1. Single speaker (LJSpeech)</h2></a>
+<a name="1.1"><h3>1.1 Reconstruction to waveform from speech representations</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Ground Truth</strong></th>
+      <th style="text-align: center"><strong>Hifi-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>Inner-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>WaveGAN</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ050-0069.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_hifigan/LJ050-0069.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_ourg/LJ050-0069.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_flow_wavegan/LJ050-0069.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ049-0154.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_hifigan/LJ049-0154.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_ourg/LJ049-0154.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_flow_wavegan/LJ049-0154.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ046-0033.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_hifigan/LJ046-0033.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_ourg/LJ046-0033.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_flow_wavegan/LJ046-0033.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ031-0014.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_hifigan/LJ031-0014.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_ourg/LJ031-0014.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_flow_wavegan/LJ031-0014.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ019-0368.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_hifigan/LJ019-0368.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_ourg/LJ019-0368.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/copsyn_flow_wavegan/LJ019-0368.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br>
+<a name="1.2"><h3>1.2 End-to-end Speech Synthesis</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Ground Truth</strong></th>
+      <th style="text-align: center"><strong>Glow-TTS + Hifi-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>Glow-TTS + Inner-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>Glow-WaveGAN (Z)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ050-0069.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_hifigan/LJ050-0069.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_ourg/LJ050-0069.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/flow_wavegan/LJ050-0069.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ049-0154.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_hifigan/LJ049-0154.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_ourg/LJ049-0154.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/flow_wavegan/LJ049-0154.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ046-0033.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_hifigan/LJ046-0033.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_ourg/LJ046-0033.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/flow_wavegan/LJ046-0033.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ031-0014.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_hifigan/LJ031-0014.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_ourg/LJ031-0014.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/flow_wavegan/LJ031-0014.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/ground_truth/LJ019-0368.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_hifigan/LJ019-0368.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/e2e_ourg/LJ019-0368.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/flow_wavegan/LJ019-0368.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br>
+<a name="2"><h2>2. Multi-spekaer (VCTK)</h2></a>
+<a name="2.1"><h3>2.1 Reconstruction to waveform from speech representations</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Ground Truth</strong></th>
+      <th style="text-align: center"><strong>Hifi-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>Inner-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>WaveGAN</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_hifigan/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_ourg/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_flow_wavegan/p237_201.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p303_296.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_hifigan/p303_296.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_ourg/p303_296.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_flow_wavegan/p303_296.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p335_409.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_hifigan/p335_409.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_ourg/p335_409.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_flow_wavegan/p335_409.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p243_327.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_hifigan/p243_327.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_ourg/p243_327.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_flow_wavegan/p243_327.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p276_398.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_hifigan/p276_398.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_ourg/p276_398.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_flow_wavegan/p276_398.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br>
+<a name="1.2"><h3>1.2 End-to-end Speech Synthesis</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Ground Truth</strong></th>
+      <th style="text-align: center"><strong>Glow-TTS + Hifi-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>Glow-TTS + Inner-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>Glow-WaveGAN (Z)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_hifigan/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_ourg/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/flow_wavegan/p237_201.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p303_296.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_hifigan/p303_296.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_ourg/p303_296.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/flow_wavegan/p303_296.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p335_409.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_hifigan/p335_409.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_ourg/p335_409.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/flow_wavegan/p335_409.wav" controls="" preload=""></audio></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<a name="2.3"><h3>2.3 Synthesis for unseen speaekrs</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Ground Truth</strong></th>
+      <th style="text-align: center"><strong>Glow-TTS + Hifi-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>Glow-TTS + Inner-GAN (Mel)</strong></th>
+      <th style="text-align: center"><strong>Glow-WaveGAN (Z)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p243_327.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_hifigan/p243_327.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_ourg/p243_327.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/flow_wavegan/p243_327.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p276_398.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_hifigan/p276_398.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/e2e_ourg/p276_398.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/flow_wavegan/p276_398.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+
+<br>
+<a name="3"><h2>3. Additional comparison</h2></a>
+<a name="3.1"><h3>3.1 Compare with the hifigan demos</h3></a>
+<p> We compare the demos of our proposed Glow-WaveGAN with the demos from official HiFi-GAN (<a href="https://jik876.github.io/hifi-gan-demo/">https://jik876.github.io/hifi-gan-demo/</a>)</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Ground Truth</strong></th>
+      <th style="text-align: center"><strong>Tacotron2 + Hifi-GAN</strong></th>
+      <th style="text-align: center"><strong>Tacotron2 + Hifi-GAN(fine-tuned)</strong></th>
+      <th style="text-align: center"><strong>Glow-WaveGAN</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_1/origin/LJ005-0202.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan/LJ005-0202.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan_ft/LJ005-0202.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/flow_wavegan/LJ005-0202.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_1/origin/LJ012-0044.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan/LJ012-0044.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan_ft/LJ012-0044.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/flow_wavegan/LJ012-0044.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_1/origin/LJ031-0007.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan/LJ031-0007.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan_ft/LJ031-0007.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/flow_wavegan/LJ031-0007.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_1/origin/LJ035-0162.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan/LJ035-0162.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan_ft/LJ035-0162.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/flow_wavegan/LJ035-0162.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_1/origin/LJ050-0271.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan/LJ050-0271.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan_ft/LJ050-0271.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/flow_wavegan/LJ050-0271.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+
+<br>
+<a name="3.2"><h3>3.2 Compare with the glow-tts demos</h3></a>
+<p> We compare the demos of our proposed Glow-WaveGAN with the demos from official Glow-TTS (<a href="https://jaywalnut310.github.io/glow-tts-demo/">https://jaywalnut310.github.io/glow-tts-demo/</a>)</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Ground Truth</strong></th>
+      <th style="text-align: center"><strong>Glow-TTS + WaveGlow</strong></th>
+      <th style="text-align: center"><strong>Glow-WaveGAN</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_2/origin/LJ002-0174.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_2/glow_tts+waveglow/LJ002-0174.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_2/flow_wavegan/LJ002-0174.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_2/origin/LJ012-0067.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_2/glow_tts+waveglow/LJ012-0067.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_2/flow_wavegan/LJ012-0067.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_2/origin/LJ028-0138.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_2/glow_tts+waveglow/LJ028-0138.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_2/flow_wavegan/LJ028-0138.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/compare_2/origin/LJ029-0114.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_2/glow_tts+waveglow/LJ029-0114.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_2/flow_wavegan/LJ029-0114.wav" controls="" preload=""></audio></td>
+    </tr>
+  </tbody>
+</table>
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com/">GitHub Pages</a>.</span>
+      </footer>
+    </section>
+</body></html>
