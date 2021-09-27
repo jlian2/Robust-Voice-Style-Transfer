@@ -39,24 +39,24 @@
 <h2><p class="toc_title">Contents</p></h2>
 <div id="toc_container">
 <ul>
-  <li><a href="#1">Single speaker (LJSpeech)</a></li>
+  <li><a href="#1">Voice Identity Transfer(Many to Many)</a></li>
   <ul>
-    <li><a href="#1.1">Waveform reconstruction</a></li>
-    <li><a href="#1.2">End-to-end Speech Synthesis</a></li>
+    <li><a href="#1.1">Identity Swapping Between Male and Female</a></li>
+    <li><a href="#1.2">Identity Swapping Between Male and Male</a></li>
+    <li><a href="#1.2">Identity Swapping Between Female and Female</a></li>
   </ul>
-  <li><a href="#2">Multi speaker (VCTK)</a></li>
+  <li><a href="#2">Voice Speed Transfer</a></li>
   <ul>
-    <li><a href="#2.1">Reconstruction to waveform</a></li>
-    <li><a href="#2.2">End-to-end Speech Synthesis</a></li>
-    <li><a href="#2.3">Synthesis for unseen speaekrs</a></li>
+    <li><a href="#2.1">Identity+Speed Swapping Between Male and Female</a></li>
+
   </ul>
-  <li><a href="#3">Additional comparison</a></li>
+  <li><a href="#3">Noise Invariant Voice Style Transfer</a></li>
   <ul>
-    <li><a href="#3.1">Compare with the hifigan demos</a></li>
-    <li><a href="#3.2">Compare with the glow-tts demos</a></li>
+    <li><a href="#3.1">Case1</a></li>
+    <li><a href="#3.2">Case2</a></li>
   </ul>
 </ul>
-Annotation: The <b>inner-GAN</b> indicates that the decoder in our VAE and the discriminators are used as a GAN-based vocoder, which receives Mel-spectrum as input. <b>WaveGAN</b> means the VAE + GAN model, which can be used to reconstruct input speech.
+Annotation: The <b>Annotation</b> 
 </div>
 <br>
 <br>
@@ -66,10 +66,10 @@ Annotation: The <b>inner-GAN</b> indicates that the decoder in our VAE and the d
 <table>
   <thead>
     <tr>
-      <th style="text-align: center"><strong>Ground Truth</strong></th>
-      <th style="text-align: center"><strong>Hifi-GAN (Mel)</strong></th>
-      <th style="text-align: center"><strong>Inner-GAN (Mel)</strong></th>
-      <th style="text-align: center"><strong>WaveGAN</strong></th>
+      <th style="text-align: center"><strong>Source1/Target2</strong></th>
+      <th style="text-align: center"><strong>Source2/Target1</strong></th>
+      <th style="text-align: center"><strong>Male to Female</strong></th>
+      <th style="text-align: center"><strong>Female to Male</strong></th>
     </tr>
   </thead>
   <tbody>
