@@ -32,55 +32,43 @@
 <h2><p class="toc_title">Contents</p></h2>
 <div id="toc_container">
 <ul>
-  <li><a href="#1">Voice Identity Transfer(Many to Many)</a></li>
-  <ul>
-    <li><a href="#1.1">Identity Swapping Between Mal and Female</a></li>
-    <li><a href="#1.2">Identity Swapping Between Male and Male</a></li>
-    <li><a href="#1.2">Identity Swapping Between Female and Female</a></li>
-  </ul>
-  <li><a href="#2">Voice Speed Transfer</a></li>
-  <ul>
-    <li><a href="#2.1">Identity+Speed Swapping Between Male and Female</a></li>
-  </ul>
-  <li><a href="#3">Noise Invariant Voice Style Transfer</a></li>
-  <ul>
-    <li><a href="#3.1">Case1</a></li>
-    <li><a href="#3.2">Case2</a></li>
-  </ul>
+  <li><a href="#1">Voice Identity Transfer(Zero-Shot)</a></li>
+  <li><a href="#2">Noise Invariant Voice Style Transfer(Zero-Shot)</a></li>
 </ul>
 Annotation: The <b>Annotation</b> 
 </div>
 <br>
 <br>
-<a name="1"><h2>1. Voice Identity Transfer(Many to Many)</h2></a>
-<a name="1.1"><h3>1.1 Identity Swapping Between Mal and Female</h3></a>
+<a name="1"><h2>1. Voice Identity Transfer(Zero-Shot)</h2></a>
+<a name="1.1"><h3>1.1 Identity Swapping Between Male and Female</h3></a>
 <table>
   <thead>
     <tr>
-      <th style="text-align: center"><strong>Male Source</strong></th>
-      <th style="text-align: center"><strong>Female Source</strong></th>
-      <th style="text-align: center"><strong>Male to Female</strong></th>
-      <th style="text-align: center"><strong>Female to Male</strong></th>
+      <th style="text-align: center"><strong>Source</strong></th>
+      <th style="text-align: center"><strong>Target</strong></th>
+      <th style="text-align: center"><strong>Conversion</strong></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: left"><audio src="samples/identity/male1.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female1.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/male1_female1.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female1_male1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p293_p271.wav" controls="" preload=""></audio></td>
     </tr>
     <tr>
-      <td style="text-align: left"><audio src="samples/identity/male1.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female2.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/male1_female2.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female2_male1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p317_p274.wav" controls="" preload=""></audio></td>
     </tr>
     <tr>
-      <td style="text-align: left"><audio src="samples/identity/male3.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female3.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/male3_female3.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female3_male3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p241_p317.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p274_p225.wav" controls="" preload=""></audio></td>
     </tr>
   </tbody>
 </table>
@@ -89,18 +77,21 @@ Annotation: The <b>Annotation</b>
 <table>
   <thead>
     <tr>
-      <th style="text-align: center"><strong>Male1</strong></th>
-      <th style="text-align: center"><strong>Male2</strong></th>
-      <th style="text-align: center"><strong>Male1 to Male2</strong></th> 
-      <th style="text-align: center"><strong>Male2 to Male1</strong></th>
+      <th style="text-align: center"><strong>Source</strong></th>
+      <th style="text-align: center"><strong>Target</strong></th>
+      <th style="text-align: center"><strong>Conversion</strong></th> 
     </tr>
   </thead>
-  <tbody>
+  <tbodyi>
     <tr>
-      <td style="text-align: left"><audio src="samples/identity/male1.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/male2.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/male1_male2.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/male2_male1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p259_p271.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p271_p241.wav" controls="" preload=""></audio></td>
     </tr>
   </tbody>
 </table>
@@ -109,48 +100,33 @@ Annotation: The <b>Annotation</b>
 <table>
   <thead>
     <tr>
-      <th style="text-align: center"><strong>Female1</strong></th>
-      <th style="text-align: center"><strong>Female2</strong></th>
-      <th style="text-align: center"><strong>Female1 to Female2</strong></th> 
-      <th style="text-align: center"><strong>Female2 to Female1</strong></th>
+      <th style="text-align: center"><strong>Source</strong></th>
+      <th style="text-align: center"><strong>Target</strong></th>
+      <th style="text-align: center"><strong>Conversion</strong></th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: left"><audio src="samples/identity/female1.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female2.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female1_female2.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female2_female1.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female4.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female2_female4.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples/identity/female4_female2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p225_p317.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p293_p225.wav" controls="" preload=""></audio></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/demo_baseline/p293_p317.wav" controls="" preload=""></audio></td>
     </tr>
   </tbody>
 </table>
 <br>
-<a name="2"><h2>2. Voice Speed Transfer</h2></a>
-<a name="2.1"><h3>2.1 Identity+Speed Swapping Between Male and Female</h3></a>
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center"><strong>Male(Slow)</strong></th>
-      <th style="text-align: center"><strong>Female(Fast)</strong></th>
-      <th style="text-align: center"><strong>Male to female and Slow to Fast</strong></th>
-      <th style="text-align: center"><strong>Female to Male and Fast to Slow</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p237_201.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples_vctk/copsyn_hifigan/p237_201.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples_vctk/copsyn_ourg/p237_201.wav" controls="" preload=""></audio></td>
-      <td style="text-align: left"><audio src="samples_vctk/copsyn_flow_wavegan/p237_201.wav" controls="" preload=""></audio></td>
-    </tr>
-  </tbody>
-</table>
-<br>
-<a name="3"><h2>3. Noise Invariant Voice Style Transfer</h2></a>
-<a name="3.1"><h3>3.1 case1</h3></a>
+
+<a name="3"><h2>2. Noise Invariant Voice Style Transfer(Zero-Shot)</h2></a>
+<a name="3.1"><h3>2.1 case1</h3></a>
 <p> Comment</a>)</p>
 <table>
   <thead>
