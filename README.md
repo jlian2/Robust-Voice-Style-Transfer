@@ -1,5 +1,5 @@
-# Robust Disentangled Variational Speech Representation Learning for Zero-Shot Voice Style Transfer
+# Robust Disentangled Variational Speech Representation Learning for Zero-Shot Voice Conversion
 
-Check our project site, the code will be released shortly. https://jlian2.github.io/Robust-Voice-Style-Transfer/
+Demo is here  https://jlian2.github.io/Robust-Voice-Style-Transfer/.
 
 
