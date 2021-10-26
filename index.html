@@ -1,259 +1,179 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title>Robust Disentangled Variational Speech Representation Learning for Zero-Shot Voice Style Transfer</title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="1894.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 24.0px; font: 16.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff; background-color: #198a45; min-height: 18.0px}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 39.0px; font: 26.4px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 19.0px; font: 13.2px 'Helvetica Neue'; color: #4e595e; -webkit-text-stroke: #4e595e}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 13.2px 'Helvetica Neue'; color: #4e595e; -webkit-text-stroke: #4e595e}
-    p.p6 {margin: 0.0px 0.0px 13.2px 0.0px; line-height: 19.0px; font: 13.2px 'Helvetica Neue'; color: #4e595e; -webkit-text-stroke: #4e595e}
-    p.p7 {margin: 0.0px 0.0px 19.8px 0.0px; line-height: 29.0px; font: 19.8px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45}
-    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 19.0px; font: 13.2px 'Helvetica Neue'; color: #4e595e; -webkit-text-stroke: #4e595e; min-height: 16.0px}
-    p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 18.0px; font: 12.0px 'Helvetica Neue'; color: #6e7f86; -webkit-text-stroke: #6e7f86}
-    li.li8 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 19.0px; font: 13.2px 'Helvetica Neue'; color: #1955a9; -webkit-text-stroke: #1955a9}
-    li.li9 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 19.0px; font: 13.2px 'Helvetica Neue'; color: #4e595e; -webkit-text-stroke: #4e595e}
-    span.s1 {font-kerning: none}
-    span.s2 {font: 9.9px 'Helvetica Neue'; font-kerning: none}
-    span.s3 {-webkit-text-stroke: 0px #000000}
-    span.s4 {font: 12.0px 'Helvetica Neue'; font-kerning: none; color: #1955a9; background-color: transparent; -webkit-text-stroke: 0px #1955a9}
-    span.s5 {font-kerning: none; color: #4e595e; -webkit-text-stroke: 0px #4e595e}
-    td.td1 {width: 275.0px; margin: 0.5px 0.5px 0.5px 0.5px; border-style: solid; border-width: 1.0px 1.0px 1.0px 1.0px; border-color: #e4e6e7 #e4e6e7 #e4e6e7 #e4e6e7; padding: 6.0px 12.0px 6.0px 12.0px}
-    ul.ul1 {list-style-type: disc}
-    ul.ul2 {list-style-type: circle}
-  </style>
-</head>
-<body>
-<p class="p1"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">Robust Disentangled Variational Speech Representation Learning for Zero-Shot Voice Conversion</span></p>
-<p class="p3"><span class="s1">Jiachen Lian</span><span class="s2">1</span><span class="s1">, </span><span class="s2">2</span><span class="s1">, Chunlei Zhang</span><span class="s2">2</span><span class="s1">, Dong Yu</span><span class="s2">2</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s2">1</span><span class="s1"><span class="Apple-converted-space">  </span>UC Berkeley EECS, CA</span></p>
-<p class="p4"><span class="s2">2</span><span class="s1"> Tencent AI Lab, WA</span></p>
-<h2 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 29.0px; font: 19.8px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">Abstract</span></h2>
-<p class="p6"><span class="s1">Traditional studies on voice conversion (VC) have made progress with parallel training data and known speakers, good conversion quality is obtained by exploring better alignment modules or expressive mapping functions. In this study, we investigate zero-shot VC from a novel perspective of self-supervised disentangled speech representation learning. Specifically, we achieve the disentanglement by balancing the information flow between global speaker representation and time-varying content representation in a sequential variational autoencoder (VAE). A zero-shot voice conversion is performed by feeding an arbitrary speaker embedding and content embeddings to the VAE decoder. Besides that, an on-the-fly data augmentation training strategy is applied to make the learned representation noise invariant. On both TIMIT and VCTK datasets, we achieve state-of-the-art performance on objective evaluation, i.e., speaker verification (SV) on both speaker embedding and content embedding. For VC experiments with the VCTK dataset, our proposed method achieves competitive performance in terms of voice naturalness and similarity, and remains to be robust even with noisy source/target utterances.<span class="Apple-converted-space"> </span></span></p>
-<p class="p7"><span class="s1">Contents</span></p>
-<ul class="ul1">
-  <li class="li8"><span class="s3"></span><span class="s1">Clean Voice Conversion</span></li>
-  <ul class="ul2">
-    <li class="li8"><span class="s3"></span><span class="s1">Identity Swapping Between Mal and Female</span></li>
-    <li class="li8"><span class="s3"></span><span class="s1">Identity Swapping Between Male and Male</span></li>
-    <li class="li8"><span class="s3"></span><span class="s1">Identity Swapping Between Female and Female</span></li>
+<!DOCTYPE html>
+<!-- saved from url=(0033)https://syang1993.github.io/glow_wavegan/ -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Robust Disentangled Variational Speech Representation Learning for Zero-Shot Voice Style Transfer</title>
+<meta name="generator" content="Jekyll v3.9.0">
+<meta property="og:title" content="Robust Disentangled Variational Speech Representation Learning for Zero-Shot Voice Style Transfer">
+<meta property="og:locale" content="en_US">
+<link rel="canonical" href="https://syang1993.github.io/glow_wavegan/">
+<meta property="og:url" content="https://syang1993.github.io/glow_wavegan/">
+<meta name="twitter:card" content="summary">
+<!-- End Jekyll SEO tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body data-new-gr-c-s-check-loaded="14.1001.0" data-gr-ext-installed="">
+    <section class="page-header">
+    <!-- <h1 class="project-name">Demo PAGE</h1> -->
+    <!-- <h2 class="project-tagline"></h2> -->
+      
+      
+    </section>
+    <section class="main-content">
+      <h1 id=""><center> Robust Disentangled Variational Speech Representation Learning for Zero-Shot Voice Style Transfer </center></h1>
+<center> XXX<sup>1</sup>, XXX<sup>2</sup>, XXX<sup>1</sup>, XXX<sup>2</sup> </center>
+<center> <sup>1</sup> XXXX </center>
+<center> <sup>2</sup> XXXX</center>
+<h2 id="abstract">Abstract</h2>
+<p>This is Abstract Page</p>
+<h2><p class="toc_title">Contents</p></h2>
+<div id="toc_container">
+<ul>
+  <li><a href="#1">Voice Identity Transfer(Many to Many)</a></li>
+  <ul>
+    <li><a href="#1.1">Identity Swapping Between Mal and Female</a></li>
+    <li><a href="#1.2">Identity Swapping Between Male and Male</a></li>
+    <li><a href="#1.2">Identity Swapping Between Female and Female</a></li>
   </ul>
-  <li class="li8"><span class="s3"></span><span class="s1">Noise Voice Conversion</span></li>
-  <ul class="ul2">
-    <li class="li8"><span class="s3"></span><span class="s1">Case1</span></li>
-    <li class="li8"><span class="s3"></span><span class="s1">Case2</span></li>
+  <li><a href="#2">Voice Speed Transfer</a></li>
+  <ul>
+    <li><a href="#2.1">Identity+Speed Swapping Between Male and Female</a></li>
   </ul>
-  <li class="li9"><span class="s1">Annotation: The <b>Annotation</b><span class="Apple-converted-space"> </span></span></li>
+  <li><a href="#3">Noise Invariant Voice Style Transfer</a></li>
+  <ul>
+    <li><a href="#3.1">Case1</a></li>
+    <li><a href="#3.2">Case2</a></li>
+  </ul>
 </ul>
-<p class="p10"><span class="s1"></span><br></p>
-<p class="p10"><span class="s1"></span><br></p>
-<h2 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 29.0px; font: 19.8px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">1. Voice Identity Transfer(Many to Many)</span></h2>
-<h3 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 23.0px; font: 15.4px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">1.1 Identity Swapping Between Mal and Female</span></h3>
-<table cellspacing="0" cellpadding="0">
+Annotation: The <b>Annotation</b> 
+</div>
+<br>
+<br>
+<a name="1"><h2>1. Voice Identity Transfer(Many to Many)</h2></a>
+<a name="1.1"><h3>1.1 Identity Swapping Between Mal and Female</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Male Source</strong></th>
+      <th style="text-align: center"><strong>Female Source</strong></th>
+      <th style="text-align: center"><strong>Male to Female</strong></th>
+      <th style="text-align: center"><strong>Female to Male</strong></th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Male Source</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Female Source</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Male to Female</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Female to Male</b></span></p>
-      </td>
+      <td style="text-align: left"><audio src="samples/identity/male1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/male1_female1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female1_male1.wav" controls="" preload=""></audio></td>
     </tr>
     <tr>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
+      <td style="text-align: left"><audio src="samples/identity/male1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/male1_female2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female2_male1.wav" controls="" preload=""></audio></td>
     </tr>
     <tr>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
+      <td style="text-align: left"><audio src="samples/identity/male3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/male3_female3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female3_male3.wav" controls="" preload=""></audio></td>
     </tr>
   </tbody>
 </table>
-<p class="p10"><span class="s1"></span><br></p>
-<h3 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 23.0px; font: 15.4px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">1.2 Identity Swapping Between Male and Male</span></h3>
-<table cellspacing="0" cellpadding="0">
+<br>
+<a name="1.2"><h3>1.2 Identity Swapping Between Male and Male</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Male1</strong></th>
+      <th style="text-align: center"><strong>Male2</strong></th>
+      <th style="text-align: center"><strong>Male1 to Male2</strong></th> 
+      <th style="text-align: center"><strong>Male2 to Male1</strong></th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Male1</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Male2</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Male1 to Male2</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Male2 to Male1</b></span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
+      <td style="text-align: left"><audio src="samples/identity/male1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/male2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/male1_male2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/male2_male1.wav" controls="" preload=""></audio></td>
     </tr>
   </tbody>
 </table>
-<p class="p10"><span class="s1"></span><br></p>
-<h3 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 23.0px; font: 15.4px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">1.3 Identity Swapping Between Female and Female</span></h3>
-<table cellspacing="0" cellpadding="0">
+<br>
+<a name="1.3"><h3>1.3 Identity Swapping Between Female and Female</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Female1</strong></th>
+      <th style="text-align: center"><strong>Female2</strong></th>
+      <th style="text-align: center"><strong>Female1 to Female2</strong></th> 
+      <th style="text-align: center"><strong>Female2 to Female1</strong></th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Female1</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Female2</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Female1 to Female2</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Female2 to Female1</b></span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
+      <td style="text-align: left"><audio src="samples/identity/female1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female1_female2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female2_female1.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female4.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female2_female4.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/identity/female4_female2.wav" controls="" preload=""></audio></td>
     </tr>
   </tbody>
 </table>
-<p class="p10"><span class="s1"></span><br></p>
-<h2 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 29.0px; font: 19.8px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">2. Voice Speed Transfer</span></h2>
-<h3 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 23.0px; font: 15.4px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">2.1 Identity+Speed Swapping Between Male and Female</span></h3>
-<table cellspacing="0" cellpadding="0">
+<br>
+<a name="2"><h2>2. Voice Speed Transfer</h2></a>
+<a name="2.1"><h3>2.1 Identity+Speed Swapping Between Male and Female</h3></a>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Male(Slow)</strong></th>
+      <th style="text-align: center"><strong>Female(Fast)</strong></th>
+      <th style="text-align: center"><strong>Male to female and Slow to Fast</strong></th>
+      <th style="text-align: center"><strong>Female to Male and Fast to Slow</strong></th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Male(Slow)</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Female(Fast)</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Male to female and Slow to Fast</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Female to Male and Fast to Slow</b></span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
+      <td style="text-align: left"><audio src="samples_vctk/ground_truth/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_hifigan/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_ourg/p237_201.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples_vctk/copsyn_flow_wavegan/p237_201.wav" controls="" preload=""></audio></td>
     </tr>
   </tbody>
 </table>
-<p class="p10"><span class="s1"></span><br></p>
-<h2 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 29.0px; font: 19.8px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">3. Noise Invariant Voice Style Transfer</span></h2>
-<h3 style="margin: 0.0px 0.0px 12.0px 0.0px; line-height: 23.0px; font: 15.4px 'Helvetica Neue'; color: #198a45; -webkit-text-stroke: #198a45"><span class="s1">3.1 case1</span></h3>
-<p class="p6"><span class="s1">Comment)</span></p>
-<table cellspacing="0" cellpadding="0">
+<br>
+<a name="3"><h2>3. Noise Invariant Voice Style Transfer</h2></a>
+<a name="3.1"><h3>3.1 case1</h3></a>
+<p> Comment</a>)</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Ground Truth</strong></th>
+      <th style="text-align: center"><strong>Tacotron2 + Hifi-GAN</strong></th>
+      <th style="text-align: center"><strong>Tacotron2 + Hifi-GAN(fine-tuned)</strong></th>
+      <th style="text-align: center"><strong>Glow-WaveGAN</strong></th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Ground Truth</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Tacotron2 + Hifi-GAN</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Tacotron2 + Hifi-GAN(fine-tuned)</b></span></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p3"><span class="s1"><b>Glow-WaveGAN</b></span></p>
-      </td>
-    </tr>
-    <tr>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
-      <td valign="middle" class="td1">
-        <p class="p10"><span class="s1"></span><br></p>
-      </td>
+      <td style="text-align: left"><audio src="samples/compare_1/origin/LJ005-0202.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan/LJ005-0202.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/hifigan_ft/LJ005-0202.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="samples/compare_1/flow_wavegan/LJ005-0202.wav" controls="" preload=""></audio></td>
     </tr>
   </tbody>
 </table>
-<p class="p10"><span class="s1"></span><br></p>
-<p class="p12"><span class="s1">This page was generated by <a href="https://pages.github.com/"><span class="s4">GitHub Pages</span></a>.</span><span class="s5"><span class="Apple-converted-space"> </span></span></p>
-</body>
-</html>
+<br>
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com/">GitHub Pages</a>.</span>
+      </footer>
+    </section>
+</body></html>
