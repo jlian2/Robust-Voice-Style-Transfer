@@ -41,6 +41,7 @@
 <div id="toc_container"
 <ul>
   <li>This is self-supervised Voice Conversion: No speaker labels used in the training and no pretrained speaker embeddings are used.  </a></li>
+  <li>Unconditional speech generation was also performed. Due to limit of space, we did not list them in the paper, but you can check them here in Section 3.   </a></li>
   <li>Though not stated in the paper, we observed improvement in speech quality when applying HifiGAN, of which results are also attached </a></li>
 </ul>
 </div>
@@ -386,6 +387,14 @@
     </tr>
   </tbody>
 </table>
+
+<br>
+<a name="3"><h2>3. Unconditional Speech Generation</h2></a>
+VAE allows to generation infinite number of new speakers during testing. We just sample speaker embeddings from a given prior distribution with a specified mean vector and standard deviation vector. 
+We observed that the standard deviation does not influence the speaker identity too much while the mean is closely related to the speaker identity. Especially, we found that positive "mean" corresponds to male voice,
+and negative "mean" corresponds to female voice. The experiment takes two utterance as input. Then we set 5 different mean vectors(-1.5, -0.5, 0.0, 0.5, 1.5) of length 64 and standard deviation(0.5) vector of the same size. 
+Then we just concatenate sampled spaker embedding and the extracted content embedding to synthesize the mel-spectrogram. For each mean-vector, we sample two speakers using the same random seed. The result is as follows:
+<imgsrc="samples/Uncondition.png"/width="300px"height="180px">
 
 <br>
       <footer class="site-footer">        
