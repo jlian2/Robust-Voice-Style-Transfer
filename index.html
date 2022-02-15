@@ -28,7 +28,7 @@
 <center> <sup>1</sup> Berkeley EECS, CA </center>
 <center> <sup>2</sup> Tencent AI Lab, Bellevue, WA</center>
 <h2 id="abstract">Abstract</h2>
-<p>Traditional studies on voice conversion (VC) have made progress with parallel training data and known speakers, good conversion quality is obtained by exploring better alignment modules or expressive mapping functions. In this study, we investigate zero-shot VC from a novel perspective of self-supervised disentangled speech representation learning. Specifically, we achieve the disentanglement by balancing the information flow between global speaker representation and time-varying content representation in a sequential variational autoencoder (VAE). A zero-shot voice conversion is performed by feeding an arbitrary speaker embedding and content embeddings to the VAE decoder. Besides that, an on-the-fly data augmentation training strategy is applied to make the learned representation noise invariant. On both TIMIT and VCTK datasets, we achieve state-of-the-art performance on objective evaluation, i.e., speaker verification (SV) on both speaker embedding and content embedding. For VC experiments with the VCTK dataset, our proposed method achieves competitive performance in terms of voice naturalness and similarity, and remains to be robust even with noisy source/target utterances. </p>
+<p>This work proposed a novel self-supervised zero-shot voice conversion that does not reply on speaker labels and pre-trained speaker embeddings. Such method is robust to noisy speech and even outperforms all previous voice conversion methods that rely on supervisory speaker signals.</p>
 <h2><p class="toc_title">Contents</p></h2>
 <div id="toc_container">
 <ul>
