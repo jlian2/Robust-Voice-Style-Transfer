@@ -5,6 +5,8 @@ Demo is here  https://jlian2.github.io/Robust-Voice-Style-Transfer/.
 Paper and Code will be released soon. 
 
 
+# Bibtex
+
 ```
 @inproceedings{D-DSVAE-VC,
   title={Robust Disentangled Variational Speech Representation Learning for Zero-shot Voice Conversion},
