@@ -2,7 +2,9 @@
 
 Demo is here  https://jlian2.github.io/Robust-Voice-Style-Transfer/. 
 
-Paper and Code will be released soon. 
+Paper is here https://arxiv.org/abs/2203.16705. 
+
+Code will be released soon. 
 
 
 # Bibtex
