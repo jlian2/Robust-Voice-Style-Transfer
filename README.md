@@ -2,6 +2,9 @@
 
 Demo is here  https://jlian2.github.io/Robust-Voice-Style-Transfer/. 
 
+Also check our most recent VC work. 
+https://github.com/jlian2/Improved-Voice-Conversion-with-Conditional-DSVAE
+
 Paper is here https://arxiv.org/abs/2203.16705. 
 
 Code will be released soon. 
